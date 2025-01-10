@@ -1,4 +1,3 @@
-
 const { keith } = require("../keizzah/keith");
 const axios = require("axios");
 
@@ -7,7 +6,7 @@ keith({
   aliases: ["habari", "tuko"],
   categorie: "AI",
   reaction: '🛄',
-}, async (sender, zk, context) => {
+}, async (dest, zk, context) => {
   const { repondre: sendResponse, arg: args } = context;
   const text = args.join(" ");
 
@@ -17,9 +16,9 @@ keith({
     }
 
     const query = encodeURIComponent(text); // Encode the query to handle special characters
-    const response = await axios.get(`https://newsapi.org/v2/everything?q=${query}&from=2024-12-09&sortBy=publishedAt&apiKey=ec5eab56a1bc412bbb6519b2afee0943`);
+    const response = await axios.get(`https://newsapi.org/v2/everything?q=${text}&from=2024-12-09&sortBy=publishedAt&apiKey=ec5eab56a1bc412bbb6519b2afee0943`);
 
-    // Check for successful response
+    // Check if the response status is ok
     if (response.status !== 200) {
       throw new Error('Network response was not ok');
     }
@@ -41,7 +40,7 @@ keith({
     }
 
   } catch (e) {
-    console.log(e);
+    console.error(e);  // Use console.error for better error logging
     sendResponse("An error occurred. Please try again later.");
   }
 });
